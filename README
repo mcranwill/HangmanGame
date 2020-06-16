@@ -30,3 +30,13 @@ To Run, build using a compiler supporting C++11 or higher.
 		$ chmod a+x HangmanGame
 		$ ./HangmanGame
 		https://www3.ntu.edu.sg/home/ehchua/programming/cpp/gcc_make.html
+		
+Next Steps or features to add:
+	* allowing user to enter custom words would be nice to have
+	* Reset in middle of game
+	* Keep count of puzzles solved correctly
+	* Keep running count of remaining guesses
+	* could other c++ features be added to simplify logic/increase maintainability
+		** lambda to accept character
+	* investigate alternatives for organizing Game object into a Gallows object () vs. Game Logic(currentWord, selectNewWord)
+	

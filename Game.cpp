@@ -6,8 +6,9 @@
 #include "Game.h"
 
 // Default Constructor
-Game::Game() : currentWord(GetRandomString())
+Game::Game()
 {
+    currentWord = GetRandomString();
     hiddenWord.insert(0, currentWord.size(), '_');
 }
 
@@ -100,16 +101,7 @@ bool Game::ProcessGuess()
         // If no match is found, then leave charInWord as false
     }
 
-    if (!charInWord && wrongGuessesList.size() >= 6)
-    {
-        // Guessed too many times, game over
-        std::cout << "Game Over!\n";
-        int tempIndex = wrongGuessesList.size();
-        usedGuesses[tempIndex] = body[tempIndex];
-        PrintGallows();
-        continueGame = false;
-    }
-    else if (charInWord && hiddenWord == currentWord)
+    if (charInWord && hiddenWord == currentWord)
     {
         // Word has been completely revealed and has no '_' left
         std::cout << "Congrats: You uncovered the word " << currentWord << '\n';
@@ -117,14 +109,25 @@ bool Game::ProcessGuess()
     }
     else if (!charInWord)
     {
-        // guessedLetter wasn't present but we haven't guessed too many times
-        int tempIndex = wrongGuessesList.size();
-        wrongGuessesList.push_back(guessedLetter);
+        // Guessed too many times, game over
+        
+        size_t tempIndex = wrongGuessesList.size();
         usedGuesses[tempIndex] = body[tempIndex];
-        // wrongGuessesList size has increased after the push_back, check if user is
-        // almost out of luck
-        if (wrongGuessesList.size() == 6)
-            std::cout << "This is your last guess\n";
+        if (tempIndex == body.size() - 1)
+        {
+            std::cout << "Game Over!\n";
+            PrintGallows();
+            continueGame = false;
+        }
+        else
+        {
+            wrongGuessesList.push_back(guessedLetter);
+            // As a courtesy, check if user is almost out of luck
+            // since wrongGuessesList size has increased after the push_back
+            if (wrongGuessesList.size() == 6)
+                std::cout << "This is your last guess\n";
+        }
+
     }
     
     return continueGame;
