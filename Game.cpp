@@ -11,12 +11,14 @@ Game::Game() : currentWord(GetRandomString())
     hiddenWord.insert(0, currentWord.size(), '_');
 }
 
+// Constructor requiring one parameter to choose from possible words
 Game::Game(int wordChoice) :
     currentWord(possibleWords[wordChoice % possibleWords.size()])
 {
     hiddenWord.insert(0, currentWord.size(), '_');
 }
 
+// Required utility function to avoid processing implicit newline characters from input via command line
 void Game::ClearInputBuffer()
 {
     char c = '\0';
@@ -26,6 +28,8 @@ void Game::ClearInputBuffer()
     } while (c != '\n' && c != EOF);
 }
 
+// Example collected from https://en.cppreference.com/w/cpp/numeric/random/uniform_int_distribution
+// to accomplish getting another string from possible words.
 std::string Game::GetRandomString()
 {
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
@@ -34,6 +38,7 @@ std::string Game::GetRandomString()
     return possibleWords[distrib(gen)];
 }
 
+// Print current state of game using hiddenWord and usedGuesses to explain past choices
 void Game::PrintGallows()
 {
     std::cout << "___________\n";
@@ -50,6 +55,7 @@ void Game::PrintGallows()
     std::cout << '\n';
 }
 
+// Game Resets with a y or Y selection and cleans up object.
 bool Game::ProcessReset()
 {
     bool shouldReset = false;
@@ -72,15 +78,18 @@ bool Game::ProcessReset()
     return shouldReset;
 }
 
+// Heavy lifting method to process guesses and reveal correct guesses and
+// update the current state of the game.
 bool Game::ProcessGuess()
 {
     bool charInWord = false, continueGame = true;
     std::cout << "Enter your guess.\n";
-
+    
+    // Save first character entered by the user even if \n is the first char entered
     const char guessedLetter = std::tolower(std::getchar());
     ClearInputBuffer();
 
-    // Turn all characters matching guessedLetter in hiddenWord over
+    // Turn all characters matching guessedLetter in hiddenWord to guessedLetter  
     for (size_t index = 0; index < currentWord.size(); ++index)
     {
         if (guessedLetter == currentWord[index])
@@ -88,10 +97,12 @@ bool Game::ProcessGuess()
             charInWord = true;
             hiddenWord[index] = guessedLetter;
         }
+        // If no match is found, then leave charInWord as false
     }
 
-    if (!charInWord && wrongGuessesList.size() >= 6) {
-        // 
+    if (!charInWord && wrongGuessesList.size() >= 6)
+    {
+        // Guessed too many times, game over
         std::cout << "Game Over!\n";
         int tempIndex = wrongGuessesList.size();
         usedGuesses[tempIndex] = body[tempIndex];
@@ -100,14 +111,18 @@ bool Game::ProcessGuess()
     }
     else if (charInWord && hiddenWord == currentWord)
     {
+        // Word has been completely revealed and has no '_' left
         std::cout << "Congrats: You uncovered the word " << currentWord << '\n';
         continueGame = false;   // Current Game is over
     }
     else if (!charInWord)
     {
+        // guessedLetter wasn't present but we haven't guessed too many times
         int tempIndex = wrongGuessesList.size();
         wrongGuessesList.push_back(guessedLetter);
         usedGuesses[tempIndex] = body[tempIndex];
+        // wrongGuessesList size has increased after the push_back, check if user is
+        // almost out of luck
         if (wrongGuessesList.size() == 6)
             std::cout << "This is your last guess\n";
     }

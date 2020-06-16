@@ -15,7 +15,7 @@ public:
     bool ProcessGuess();
 
 private:
-    // Utility Function
+    // Utility Functions
     void ClearInputBuffer();
     std::string GetRandomString();
     
