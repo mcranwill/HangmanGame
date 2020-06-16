@@ -1,0 +1,32 @@
+Simple hangman game in c++
+Link Explanation- https://en.wikipedia.org/wiki/Hangman_(game)
+
+Features:
+* Random selection of 5 words
+* Allow for 7 guesses
+* Print the incorrect guessed letters
+* Print the currently uncovered letters
+* Reset the game after failure or success to play again
+
+To Run, build using a compiler supporting C++11 or higher.
+	On Windows using an x86 Native Tools Command Prompt for VS 2019
+		(With Visual Studio 2019 or similar installed, more info here)
+		https://docs.microsoft.com/en-us/cpp/build/walkthrough-compiling-a-native-cpp-program-on-the-command-line?view=vs-2019
+
+		run the commands below to generate the exe file HangmanGame.exe which can be executed.
+		cl /EHsc HangmanGame.cpp Game.cpp
+		HangmanGame.exe
+	
+	Using g++ instead
+		// In CMD shell
+		> g++ -o HangmanGame.exe HangmanGame.cpp Game.cpp
+		   // Compile and link source HangmanGame.cpp into executable HangmanGame.exe
+		> HangmanGame
+		   // Execute under CMD shell
+
+	On Mac/Linux 
+		// In Bash shell
+		$ g++ -o HangmanGame HangmanGame.cpp Game.cpp
+		$ chmod a+x HangmanGame
+		$ ./HangmanGame
+		https://www3.ntu.edu.sg/home/ehchua/programming/cpp/gcc_make.html
